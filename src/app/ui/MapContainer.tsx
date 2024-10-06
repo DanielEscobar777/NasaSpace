@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { RangeInput } from "./Componentes/RangeInput";
 import MyMap from "./Componentes/MyMap";
-type Props = {};
 
 function MapContainer({}: Props) {
   const [opacityValue, setOpacityValue] = useState(0.5); // Valor inicial del rango

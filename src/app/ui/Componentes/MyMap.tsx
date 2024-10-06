@@ -20,7 +20,7 @@ import "leaflet/dist/images/marker-icon.png";
 function MyMap({ opacity }) {
   const [data, setData] = useState([]);
 
-  let myIcon = L.icon({
+  const myIcon = L.icon({
     iconUrl: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png", // Usar HTTPS
     iconSize: [30, 30], // Tamaño del ícono
     iconAnchor: [15, 30], // Punto del ícono que se ancla al mapa (centro inferior)
