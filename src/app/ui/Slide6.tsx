@@ -168,7 +168,7 @@ const Map: React.FC = () => {
       <p style={{ textAlign: 'center', marginBottom: '20px', fontSize: '16px', color: '#555' }}>
         Presiona un punto del marcador azul para saber la estimación del pH y del CO₂ de ese punto.
       </p>
-      <div id="heatmap" style={{ width: '100%', height: '600px', borderRadius: '10px', overflow: 'hidden', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }} />
+      <div id="heatmap" style={{ width: '100%', height: '70vh', borderRadius: '10px', overflow: 'hidden', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }} />
     </div>
   );
 };

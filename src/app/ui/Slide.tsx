@@ -4,7 +4,7 @@ import React from "react";
 const Slide1 = () => {
   return (
     <div >
-      <div className="bg-zinc-600 rounded-lg    p-4 shadow-lg flex items-center justify-center">
+      <div className="bg-white rounded-lg shadow-lg flex items-center justify-center">
         <Image
           width={1600}
           height={900}

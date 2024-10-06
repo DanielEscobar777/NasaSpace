@@ -12,22 +12,23 @@ import {
   NavbarMenuItem,
 } from "@nextui-org/react";
 import { AcmeLogo } from "./logos/AcmeLogo";
-import { useRouter } from 'next/navigation'; // Usar la API de router de Next.js
+import { useRouter } from 'next/navigation';
 
 const TopAppBar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+  // Modificado para incluir rutas específicas
   const menuItems = [
-    "Inicio",
-    "Informacion de sensores",
-    "Informacion satelital",
-    "Parametros informativos",
+    { name: "Inicio", path: "/" },
+    { name: "Informacion de sensores", path: "/sens" },
+    { name: "Informacion satelital", path: "/map" },
+    { name: "Parametros informativos", path: "/par" },
   ];
 
   const router = useRouter();
 
-  // Función para manejar la navegación
   const handleNavigation = (path: string) => {
-    router.push(path); // Cambiar página sin recargar toda la aplicación
+    router.push(path);
   };
 
   return (
@@ -62,33 +63,19 @@ const TopAppBar = () => {
         <p className="font-bold text-inherit">View Green Tec</p>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
-          <Link color="foreground" href="#" onClick={() => handleNavigation('/')}>
-            Inicio
-          </Link>
-        </NavbarItem>
-        
-        <NavbarItem>
-          <Link color="foreground" href="#" onClick={() => handleNavigation('/sens')}>
-            Informacion de sensores
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#" onClick={() => handleNavigation('/map')}>
-            Informacion satelital
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#" onClick={() => handleNavigation('/par')}>
-            Parametros informativos
-          </Link>
-        </NavbarItem>
+        {menuItems.map(item => (
+          <NavbarItem key={item.name}>
+            <Link color="foreground" href="#" onClick={() => handleNavigation(item.path)}>
+              {item.name}
+            </Link>
+          </NavbarItem>
+        ))}
       </NavbarContent>
       <NavbarMenu>
         {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
-            <Link className="w-full" color="foreground" href="#" size="lg" onClick={() => handleNavigation(`/${item.toLowerCase().replace(/\s/g, '-')}`)}>
-              {item}
+          <NavbarMenuItem key={`${item.name}-${index}`}>
+            <Link className="w-full" color="foreground" href="#" size="lg" onClick={() => handleNavigation(item.path)}>
+              {item.name}
             </Link>
           </NavbarMenuItem>
         ))}
