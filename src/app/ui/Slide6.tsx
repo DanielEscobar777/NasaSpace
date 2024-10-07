@@ -1,9 +1,8 @@
-"use client"; // Indica que este es un Client Component
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import mapaHidicoData from './logos/mapa_hidico.json'; // Ajusta la ruta según sea necesario
 
-// Define la interfaz Feature
 interface Feature {
   osm_id: number;
   osm_type: string;
@@ -31,7 +30,7 @@ const Map: React.FC = () => {
 
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAet6BC3A-TE6toXKEFBxLcFYscszuNKFw&libraries=visualization,geometry&callback=initMap";
+    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAet6BC3A-TE6toXKEFBxLcFYscszuNKFw&libraries=visualization,geometry&callback=initMap`;
     script.async = true;
     document.head.appendChild(script);
 
@@ -43,18 +42,17 @@ const Map: React.FC = () => {
   }, [selectedDate]);
 
   const calculateCO2 = (frp: number, activeTime: number) => {
-    const factor = 1.67; // toneladas/hora de CO₂ por MW
+    const factor = 0.068; // Ajuste del factor de emisión por MJ
     return frp * factor * activeTime; // toneladas de CO₂
   };
 
   const calculatePH = (co2: number, nearbyHeatPoints: number) => {
     const basePH = 7.4; // pH neutro en condiciones estándar
-    const co2Impact = 0.1 * Math.log10(co2); // Cambios en el pH según el CO2
-    const proximityImpact = nearbyHeatPoints * 0.2; // Aumento por focos cercanos
+    const co2Impact = 0.08 * Math.log10(co2); // Ajuste del impacto logarítmico del CO₂
+    const proximityImpact = nearbyHeatPoints * 0.15; // Impacto ajustado por focos cercanos
     const finalPH = basePH - co2Impact - proximityImpact;
 
-    // Limitar el pH entre 4 y 7
-    return Math.max(4, Math.min(finalPH, 7)).toFixed(2);
+    return Math.max(4, Math.min(finalPH, 7)).toFixed(2); // Límite entre 4 y 7
   };
 
   const initMap = () => {
@@ -81,17 +79,16 @@ const Map: React.FC = () => {
           if (values.length >= 14) {
             const lat = parseFloat(values[1]);
             const lng = parseFloat(values[2]);
-            const frp = parseFloat(values[13]); // Asegúrate de que este índice es correcto
-            const activeTime = 1; // Supongamos que el fuego estuvo activo 1 hora
+            const frp = parseFloat(values[13]);
+            const activeTime = 1; // Suposición de 1 hora de actividad
 
             heatPoints.push(new google.maps.LatLng(lat, lng));
 
             const co2 = calculateCO2(frp, activeTime);
 
-            // Calcular focos cercanos
-            const nearbyHeatPoints = heatPoints.filter(point => {
-              return google.maps.geometry.spherical.computeDistanceBetween(point, new google.maps.LatLng(lat, lng)) < 5000; // Distancia de 5 km
-            }).length;
+            const nearbyHeatPoints = heatPoints.filter((point) =>
+              google.maps.geometry.spherical.computeDistanceBetween(point, new google.maps.LatLng(lat, lng)) < 5000
+            ).length;
 
             const pH = calculatePH(co2, nearbyHeatPoints);
 
@@ -100,7 +97,7 @@ const Map: React.FC = () => {
               map: heatmapMap,
               title: `OSM ID: ${values[0]}`,
               icon: {
-                url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+                url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
                 scaledSize: new google.maps.Size(5, 5),
               },
             });
@@ -121,7 +118,6 @@ const Map: React.FC = () => {
           radius: 20,
         });
 
-        // Marcadores de features
         const features = mapaHidicoData as Feature[];
         features.forEach((feature) => {
           if (feature.latitude && feature.longitude) {
@@ -130,7 +126,7 @@ const Map: React.FC = () => {
               map: heatmapMap,
               title: `OSM ID: ${feature.osm_id}`,
               icon: {
-                url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+                url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
                 scaledSize: new google.maps.Size(5, 5),
               },
             });
