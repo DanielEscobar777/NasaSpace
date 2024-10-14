@@ -23,9 +23,7 @@ export default function Home() {
           subtitle="Responsabilidad de información. Responsabilidad ambiental"
           bgColor="bg-yellow-500"
         />
-   
-       
-        
+
       </div>
     </>
   );
